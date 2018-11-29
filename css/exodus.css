@@ -1,0 +1,71 @@
+
+body {
+    padding-bottom: 50px;
+}
+
+nav#nav-top {
+    margin-bottom: 20px;
+}
+
+.outline {
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 8pt;
+    padding-bottom: 8px;
+}
+
+.flex-column .nav-item {
+    padding-right: 0 !important;
+    margin-bottom: 16px;
+}
+
+.nav-pills a:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+}
+
+.nav-pills a.active:hover {
+    color: #fff;
+}
+
+.battle-init-item {
+    padding: 0 !important;
+}
+
+.battle-init-img {
+    background: white;
+    width: 100%;
+    border-top-left-radius: calc(.25rem - .0625rem);
+    border-top-right-radius: calc(.25rem - .0625rem);
+    position: relative;
+    object-fit: cover;
+    height: 100px;
+}
+
+.battle-init-item .card-body {
+    padding: 12px;
+}
+
+.section-collapse {
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.btn-form {
+    margin-top: 2.1rem;
+}
+
+.table-bordered.border-dark th, .table-bordered.border-dark td {
+    border-color: #212529 !important;
+}
+
+.table-numbers th:not(:first-child) {
+    min-width: 92px;
+}
+
+.stats-overflow {
+    overflow-x: scroll;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 5px;
+}
