@@ -27,6 +27,7 @@ var ExodusMVVM = {
             type1: ko.observable("Normal"),
             type2: ko.observable(""),
             nature: "Hardy",
+            gender: "Male",
             hp: {
                 base: ko.observable(6).extend({ numeric: 0 }),
                 lvlup: ko.observable(2).extend({ numeric: 0 }),
@@ -66,7 +67,10 @@ var ExodusMVVM = {
                 total: 0,
                 cs: ko.observable(0).extend({ numeric: 0 }),
                 final: 0
-            }
+            },
+            capabilities: {},
+            moves: ko.observableArray([]),
+            abilities: ko.observableArray([])
         },
         {
             name: ko.observable("Character Two"),
@@ -84,6 +88,7 @@ var ExodusMVVM = {
             type1: ko.observable("Grass"),
             type2: ko.observable(""),
             nature: "Cuddly",
+            gender: "Female",
             hp: {
                 base: ko.observable(6).extend({ numeric: 0 }),
                 lvlup: ko.observable(2).extend({ numeric: 0 }),
@@ -125,7 +130,10 @@ var ExodusMVVM = {
                 total: 0,
                 cs: ko.observable(0).extend({ numeric: 0 }),
                 final: 0
-            }
+            },
+            capabilities: {},
+            moves: ko.observableArray([]),
+            abilities: ko.observableArray([])
         }
     ]),
 
@@ -151,6 +159,8 @@ var ExodusMVVM = {
             level: ko.observable(1).extend({ numeric: 0 }),
             type1: ko.observable(""),
             type2: ko.observable(""),
+            nature: "Hardy",
+            gender: "Male",
             hp: {
                 base: ko.observable(10).extend({ numeric: 0 }),
                 lvlup: ko.observable(0).extend({ numeric: 0 }),
@@ -192,7 +202,10 @@ var ExodusMVVM = {
                 total: 0,
                 cs: ko.observable(0).extend({ numeric: 0 }),
                 final: 0
-            }
+            },
+            capabilities: {},
+            moves: ko.observableArray([]),
+            abilities: ko.observableArray([])
         };
 
         createCharComputed(0, newChar);

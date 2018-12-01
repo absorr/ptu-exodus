@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Hello World!</title>
+    <title>PTU Exodus</title>
 
     <!-- Favicon -->
     <link href="/img/pokeball-ico.png" rel="icon" type="image/png">
@@ -232,8 +232,12 @@
                         <div class="form-group col-md-6">
                             <label for="battle-char-gender">Gender</label>
                             <select type="text" class="form-control form-control-alternative"
-                                    id="battle-char-gender">
-                                <option value="">--</option>
+                                    id="battle-char-gender"
+                                    data-bind="value: gender">
+                                <option></option>
+                                <option>Genderless</option>
+                                <option>Male</option>
+                                <option>Female</option>
                             </select>
                         </div>
                         <div class="form-group col-md-6">
