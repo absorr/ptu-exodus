@@ -134,3 +134,11 @@ function loadPokedexDataForCharacter(character) {
         character.pokedexData = json;
     });
 }
+
+// TESTING DATA
+$.getJSON("http://ptu.will-step.com/api/v1/moves/?names=[%22Ember%22,%22Struggle%22,%22Reflect%22]", function (json) {
+    createNewMovesFromAPIReturn(ExodusMVVM.initiative()[0], json);
+});
+$.getJSON("http://ptu.will-step.com/api/v1/moves/?names=[%22Confide%22,%22Bullet%20Seed%22,%22Facade%22,%22Sleep%20Powder%22,%22Take%20Down%22,%22Poison%20Powder%22]", function (json) {
+    createNewMovesFromAPIReturn(ExodusMVVM.initiative()[1], json);
+});

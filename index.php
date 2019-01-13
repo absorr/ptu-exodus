@@ -81,7 +81,7 @@
                 data-bind="foreach: initiative">
                 <li class="nav-item">
                     <a class="nav-link card battle-init-item text-white"
-                        data-bind="click: $root.onClickChangeChar,
+                        data-bind="click: $root.onClickSelectChar,
                                    css: {
                                     'active': $root.currentChar() == $index(),
                                     'bg-default': $root.currentChar() != $index()
@@ -258,7 +258,7 @@
                                 <tr>
                                     <th scope="col">Stat</th>
                                     <th scope="col">Base</th>
-                                    <th scope="col">Level-Up</th>
+                                    <th scope="col">Added</th>
                                     <th scope="col">Total</th>
                                     <th scope="col">Stage</th>
                                     <th scope="col">Adjusted</th>
@@ -515,10 +515,82 @@
                 </div>
                 <section class="collapse" id="battle-char-actions">
                     <div class="form-row">
-                        List of stuff
+                        <div class="col-md-6">
+                            <span class="text-default col-12">Moves</span>
+                            <div data-bind="foreach: moves">
+                                <a class="btn btn-default card battle-init-item" data-bind="click: $root.onClickSelectMove">
+                                    <div class="card-body">
+                                        <p class="card-text" data-bind="text: Name">Move Name</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="moveModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal- modal-dialog-centered" role="document">
+        <div class="modal-content" data-bind="with: getCurrentMove">
+            <div class="modal-body p-0">
+
+
+                <div class="card bg-secondary shadow border-0">
+                    <div class="card-header bg-gradient-orange text-white pb-5">
+                        <h5 class="modal-title text-center text-white" id="moveModalLabel" data-bind="text: Name"></h5>
+                        <p class="lead text-center" data-bind="text: Effect"></p>
+                    </div>
+                    <div class="card-body px-lg-5 py-lg-5">
+                        <form role="form">
+                            <div class="form-row mb-3">
+                                <div class="form-group col-6">
+                                    <label for="move-type">Type</label>
+                                    <select class="form-control" id="move-type"
+                                        data-bind="options: $root.TYPE_LIST, value: Type">
+                                        <option></option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="move-class">Class</label>
+                                    <select class="form-control" id="move-class" data-bind="value: Class">
+                                        <option>Physical</option>
+                                        <option>Special</option>
+                                        <option>Status</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div data-bind="if: $data.DB || $data['Crits On'], css: {'form-row mb-3': $data.DB || $data['Crits On']}">
+                                <div class="form-group col-6" data-bind="if: $data.DB">
+                                    <label for="move-db">Damage Base</label>
+                                    <input class="form-control" type="number" id="move-db" value="4" min="1" max="20" data-bind="value: DB" />
+                                </div>
+                                <div class="form-group col-6" data-bind="if: $data['Crits On']">
+                                    <label for="move-crit">Crits On/Above</label>
+                                    <input class="form-control" type="number" id="move-crit" value="20" min="1" max="20" data-bind="value: $data['Crits On']" />
+                                </div>
+                            </div>
+                            <div class="form-row mb-3">
+                                <div data-bind="if: $data.AC, css: {'form-group col-6': $data.AC}">
+                                    <label for="move-ac">Accuracy Check</label>
+                                    <input class="form-control" type="number" id="move-ac" value="0" min="0" max="20" data-bind="value: AC" />
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="move-range">Range</label>
+                                    <input class="form-control" type="text" id="move-range" value="5, 1 Target" data-bind="value: Range" />
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary my-4">Go</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
         </div>
     </div>
 </div>

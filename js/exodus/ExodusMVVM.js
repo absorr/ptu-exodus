@@ -138,9 +138,15 @@ var ExodusMVVM = {
     ]),
 
     currentChar: ko.observable(0),
+    currentMove: ko.observable(0),
 
-    onClickChangeChar: function (char) {
+    onClickSelectChar: function (char) {
         ExodusMVVM.currentChar(ExodusMVVM.initiative.indexOf(char));
+    },
+
+    onClickSelectMove: function (move) {
+        ExodusMVVM.currentMove(ExodusMVVM.getCurrentChar().moves().indexOf(move));
+        $("#moveModal").modal('show');
     },
 
     createNewCharacter: function() {
@@ -221,6 +227,10 @@ function loadComputed() {
         return ExodusMVVM.initiative()[ExodusMVVM.currentChar()];
     }, ExodusMVVM);
 
+    ExodusMVVM.getCurrentMove = ko.computed(function() {
+        return ExodusMVVM.initiative()[ExodusMVVM.currentChar()].moves()[ExodusMVVM.currentMove()];
+    }, ExodusMVVM);
+
     $.each(ExodusMVVM.initiative(), createCharComputed);
 }
 
@@ -275,6 +285,19 @@ function createCharComputed(index, character) {
     character.spd.final = ko.pureComputed(function() {
         return Math.ceil(this.total() * this.cs() * 0.1 + this.total());
     }, character.spd);
+}
+
+function createNewMovesFromAPIReturn(char, json) {
+    $.each(json, function (name, data) {
+        data["Name"] = name;
+        data["Class"] = ko.observable(data["Class"]);
+        data["Type"] = ko.observable(data["Type"]);
+
+        if (!data["Effect"])
+            data["Effect"] = "";
+
+        char.moves.push(data);
+    });
 }
 
 
