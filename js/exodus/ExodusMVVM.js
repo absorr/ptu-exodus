@@ -287,6 +287,13 @@ function createCharComputed(index, character) {
     }, character.spd);
 }
 
+function fetchMovesFromList(char, moves) {
+    var url = "http://ptu.will-step.com/api/v1/moves/?names=" + encodeURI(JSON.stringify(moves));
+    $.getJSON(url, function (json) {
+        createNewMovesFromAPIReturn(char, json);
+    });
+}
+
 function createNewMovesFromAPIReturn(char, json) {
     $.each(json, function (name, data) {
         data["Name"] = name;

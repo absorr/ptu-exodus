@@ -541,7 +541,7 @@
                 <div class="card bg-secondary shadow border-0">
                     <div class="card-header bg-gradient-orange text-white pb-5">
                         <h5 class="modal-title text-center text-white" id="moveModalLabel" data-bind="text: Name"></h5>
-                        <p class="lead text-center" data-bind="text: Effect"></p>
+                        <p class="lead text-center" data-bind="if: $data.Effect"><span data-bind="text: Effect"></span></p>
                     </div>
                     <div class="card-body px-lg-5 py-lg-5">
                         <form role="form">
