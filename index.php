@@ -192,6 +192,15 @@
                             <button type="button" class="btn btn-outline-primary btn-form" onclick="onClickAddAffliction()">Add Affliction</button>
                         </div>
                     </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="battle-char-capturerate">Capture Rate</label>
+                            <input type="number" class="form-control form-control-alternative"
+                                   id="battle-char-capturerate"
+                                   data-bind="value: captureRate"
+                                   disabled/>
+                        </div>
+                    </div>
                 </section>
                 <div class="form-row">
                     <a class="section-collapse text-default" data-toggle="collapse" href="#battle-char-generalinfo" role="button" aria-expanded="false" aria-controls="battle-char-generalinfo">
@@ -613,6 +622,8 @@
 <script src="/js/argon.js"></script>
 
 <!-- Custom JS -->
-<script src="/js/exodus.min.js"></script>
+<!--<script src="/js/exodus.min.js"></script>-->
+<script src="js/exodus/exodus.js"></script>
+<script src="js/exodus/ExodusMVVM.js"></script>
 </body>
 </html>

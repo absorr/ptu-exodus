@@ -15,7 +15,7 @@ var ExodusMVVM = {
             name: ko.observable("Character Name"),
             image: '/img/pokemon-profiles/133.png',
             species: "133 - Eevee", //TODO: create computed observable
-            pokedex: "133",
+            pokedex: ko.observable("133"),
             health: ko.observable(29).extend({ numeric: 0 }),
             injuries: ko.observable(0).extend({ numeric: 0 }),
             maxHealth: 0,
@@ -23,6 +23,8 @@ var ExodusMVVM = {
             maxHealthDisplay: 0,
             tick: 0,
             afflictions: ko.observableArray(["Poisoned"]),
+            captureRate: 0,
+            isShiny: ko.observable(false),
             level: ko.observable(12).extend({ numeric: 0 }),
             type1: ko.observable("Normal"),
             type2: ko.observable(""),
@@ -70,13 +72,17 @@ var ExodusMVVM = {
             },
             capabilities: {},
             moves: ko.observableArray([]),
-            abilities: ko.observableArray([])
+            abilities: ko.observableArray([]),
+            onDexLoad: function() {
+                this.onDexLoadObservable(!this.onDexLoadObservable());
+            },
+            onDexLoadObservable: ko.observable(0)
         },
         {
             name: ko.observable("Character Two"),
             image: '/img/pokemon-profiles/001.png',
             species: "001 - Bulbasaur", //TODO: create computed observable
-            pokedex: "001",
+            pokedex: ko.observable("001"),
             health: ko.observable(29).extend({ numeric: 0 }),
             injuries: ko.observable(0).extend({ numeric: 0 }),
             maxHealth: 0,
@@ -84,6 +90,8 @@ var ExodusMVVM = {
             maxHealthDisplay: 0,
             tick: 0,
             afflictions: ko.observableArray([]),
+            captureRate: 0,
+            isShiny: ko.observable(false),
             level: ko.observable(12).extend({ numeric: 0 }),
             type1: ko.observable("Grass"),
             type2: ko.observable(""),
@@ -133,7 +141,11 @@ var ExodusMVVM = {
             },
             capabilities: {},
             moves: ko.observableArray([]),
-            abilities: ko.observableArray([])
+            abilities: ko.observableArray([]),
+            onDexLoad: function() {
+                this.onDexLoadObservable(!this.onDexLoadObservable());
+            },
+            onDexLoadObservable: ko.observable(0)
         }
     ]),
 
@@ -153,8 +165,8 @@ var ExodusMVVM = {
         var newChar = {
             name: ko.observable("New Character"),
             image: '',
-            species: "",
-            pokedex: "",
+            species: ko.observable(""),
+            pokedex: ko.observable(""),
             health: ko.observable(1).extend({ numeric: 0 }),
             injuries: ko.observable(0).extend({ numeric: 0 }),
             maxHealth: 0,
@@ -162,6 +174,8 @@ var ExodusMVVM = {
             maxHealthDisplay: 0,
             tick: 0,
             afflictions: ko.observableArray([]),
+            captureRate: 0,
+            isShiny: ko.observable(false),
             level: ko.observable(1).extend({ numeric: 0 }),
             type1: ko.observable(""),
             type2: ko.observable(""),
@@ -211,7 +225,11 @@ var ExodusMVVM = {
             },
             capabilities: {},
             moves: ko.observableArray([]),
-            abilities: ko.observableArray([])
+            abilities: ko.observableArray([]),
+            onDexLoad: function() {
+                this.onDexLoadObservable(!this.onDexLoadObservable());
+            },
+            onDexLoadObservable: ko.observable(false)
         };
 
         createCharComputed(0, newChar);
@@ -247,6 +265,71 @@ function createCharComputed(index, character) {
     }, character);
     character.tick = ko.pureComputed(function() {
         return Math.trunc(this.maxHealth() / 10);
+    }, character);
+    character.captureRate = ko.pureComputed(function () {
+        // Starting rate is 100 subtracted by twice their level
+        var rate = 100 - this.level() * 2;
+        var health = this.health() / this.maxHealth();
+
+        // Add health based bonus
+        if (this.health() === 1) {
+            rate += 30;
+        } else if (health > .75) {
+            rate -= 30;
+        } else if (health <= .75 && health >= .5) {
+            rate -= 15;
+        } else if (health <= .25) {
+            rate += 15
+        }
+
+        // Add Shiny bonus
+        if (this.isShiny()) {
+            rate -= 10;
+        }
+
+        // Add affliction bonus
+        $.each(this.afflictions(), function (k, v) {
+            if (v === "Burned" || v === "Frozen" || v === "Paralysis" || v === "Poisoned" || v === "Badly Poisoned" || v === "Stuck") {
+                rate += 10;
+            } else if (v === "Bad Sleep" || v === "Confused" || v === "Cursed" || v === "Disabled" || v === "Rage" ||
+                        v === "Flinch" || v === "Infatuation" || v === "Sleep" || v === "Suppressed" || v === "Temporary Hit Points" || v === "Slowed") {
+                rate += 5;
+            }
+        });
+
+        // Add injury bonus
+        rate += this.injuries() * 5;
+
+        // Pokedex related info
+        if (this.pokedex() in PokedexCache) {
+            var dexData = PokedexCache[this.pokedex()];
+            var currentStage = 0, maxStage = 0;
+
+            // Pokemon Evolution Stage
+            $.each(dexData['EvolutionStages'], function (k, v) {
+                if (v['Species'] === dexData['Species']) {
+                    currentStage = v['Stage'];
+                }
+                if (v['Stage'] > maxStage) {
+                    maxStage = v['Stage'];
+                }
+            });
+
+            if (maxStage === currentStage) {
+                rate -= 10;
+            } else if (maxStage - currentStage >= 2) {
+                rate += 10;
+            }
+
+            //TODO: Legendary (must be added to API)
+        } else {
+            loadPokedexDataForCharacter(this);
+        }
+
+        // Subscribe to Pokedex Async Observable
+        this.onDexLoadObservable();
+
+        return rate;
     }, character);
 
     // Non-Combat Totals

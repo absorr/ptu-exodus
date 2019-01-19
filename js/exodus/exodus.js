@@ -4,6 +4,8 @@ const AFFLICTIONS = [
     "Fainted", "Blindness", "Total Blindness", "Slowed", "Stuck", "Trapped", "Tripped", "Vulnerable"
 ];
 
+var PokedexCache = {};
+
 var TypeEffectivity = {};
 var Natures = {};
 
@@ -130,9 +132,25 @@ function getTypeEffectivity(attackType, defendType) {
 }
 
 function loadPokedexDataForCharacter(character) {
-    $.getJSON("http://ptu.will-step.com/api/v1/pokemon/" + character.pokedex, function (json) {
-        character.pokedexData = json;
-    });
+    if (!$.isEmptyObject(findPokedexDataByCode(character.pokedex()))) {
+        character.onDexLoad();
+    }
+}
+
+function findPokedexDataByCode(dexCode) {
+    if (dexCode in PokedexCache) {
+        return PokedexCache[dexCode];
+    } else {
+        $.getJSON("http://ptu.will-step.com/api/v1/pokemon/" + dexCode, function (json) {
+            var currentChar = ExodusMVVM.getCurrentChar();
+            PokedexCache[dexCode] = json;
+
+            if (dexCode === currentChar.pokedex()) {
+                currentChar.onDexLoad();
+            }
+        });
+        return {};
+    }
 }
 
 // TESTING DATA
