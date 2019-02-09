@@ -527,9 +527,12 @@
                         <div class="col-md-6">
                             <span class="text-default col-12">Moves</span>
                             <div data-bind="foreach: moves">
-                                <a class="btn btn-default card battle-init-item" data-bind="click: $root.onClickSelectMove">
+                                <a class="btn btn-default battle-char-move-item" data-bind="click: $root.onClickSelectMove">
                                     <div class="card-body">
-                                        <p class="card-text" data-bind="text: Name">Move Name</p>
+                                        <p class="card-text">
+                                            <span data-bind="text: Name">Move Name</span>
+                                            <span class="badge float-right" data-bind="text: Type, bgColorByType: Type">Type</span>
+                                        </p>
                                     </div>
                                 </a>
                             </div>
@@ -548,9 +551,11 @@
 
 
                 <div class="card bg-secondary shadow border-0">
-                    <div class="card-header bg-gradient-orange text-white pb-5">
+                    <div class="card-header text-white pb-5" data-bind="bgGradientByType: Type">
                         <h5 class="modal-title text-center text-white" id="moveModalLabel" data-bind="text: Name"></h5>
-                        <p class="lead text-center" data-bind="if: $data.Effect"><span data-bind="text: Effect"></span></p>
+                        <p class="lead text-center" data-bind="if: $data.Effect, style: {display: $data.Effect ? 'block' : 'none'}">
+                            <span data-bind="text: Effect"></span>
+                        </p>
                     </div>
                     <div class="card-body px-lg-5 py-lg-5">
                         <form role="form">

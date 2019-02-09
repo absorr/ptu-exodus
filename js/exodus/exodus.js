@@ -12,6 +12,45 @@ var Natures = {};
 // Bind model to Knockout
 $(function () {
     ko.applyBindings(ExodusMVVM);
+
+    ko.bindingHandlers.bgColorByType = {
+        update: function(element, valueAccessor, allBindings) {
+            var value = ko.unwrap(valueAccessor()).toLowerCase();
+            var elem = $(element);
+
+            var classes = ["bg-t-normal","bg-t-fire","bg-t-fighting","bg-t-flying","bg-t-poison","bg-t-ground","bg-t-rock",
+                "bg-t-bug","bg-t-ghost","bg-t-steel","bg-t-water","bg-t-grass","bg-t-electric","bg-t-psychic","bg-t-ice",
+                "bg-t-dragon","bg-t-dark","bg-t-fairy","bg-t-none"];
+
+            $.each(classes, function (k, className) {
+                if (className.includes(value)) {
+                    elem.addClass(className);
+                } else {
+                    elem.removeClass(className);
+                }
+            });
+        }
+    };
+
+    ko.bindingHandlers.bgGradientByType = {
+        update: function(element, valueAccessor, allBindings) {
+            var value = ko.unwrap(valueAccessor()).toLowerCase();
+            var elem = $(element);
+
+            var classes = ["bg-t-normal-gradient","bg-t-fire-gradient","bg-t-fighting-gradient","bg-t-flying-gradient",
+                "bg-t-poison-gradient","bg-t-ground-gradient","bg-t-rock-gradient","bg-t-bug-gradient","bg-t-ghost-gradient",
+                "bg-t-steel-gradient","bg-t-water-gradient","bg-t-grass-gradient","bg-t-electric-gradient","bg-t-psychic-gradient",
+                "bg-t-ice-gradient","bg-t-dragon-gradient","bg-t-dark-gradient","bg-t-fairy-gradient","bg-t-none-gradient"];
+
+            $.each(classes, function (k, className) {
+                if (className.includes(value)) {
+                    elem.addClass(className);
+                } else {
+                    elem.removeClass(className);
+                }
+            });
+        }
+    };
 });
 
 ko.extenders.numeric = function(target, precision) {
